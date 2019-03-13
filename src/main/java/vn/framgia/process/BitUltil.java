@@ -13,20 +13,24 @@ public class BitUltil {
 		BitSet result = BitSet.valueOf(data);
 		return result;
 	}
-	
+
 	public static BitSet[] cutBitSet(BitSet data, int length) {
 		BitSet[] result = new BitSet[data.length() % length == 0 ? data.length() / length : data.length() / length + 1];
 		for (int i = 0; i < result.length; i++) {
-			result[i]=data.get(i * length, (i + 1) * length);
+			BitSet bitSet = new BitSet(length);
+			for (int j = 0; j < length; j++) {
+				bitSet.set(j, data.get(i * length + j));
+			}
+			result[i] = bitSet;
 		}
 		return result;
 	}
 
-	public static BitSet mergeBitSet(BitSet[] data) {
+	public static BitSet mergeBitSet(BitSet[] data, int length) {
 		BitSet result = new BitSet();
 		int index = 0;
 		for (int i = 0; i < data.length; i++) {
-			for (int j = 0; j < data[i].length(); j++) {
+			for (int j = 0; j < length; j++) {
 				result.set(index, data[i].get(j));
 				index++;
 			}
@@ -34,19 +38,54 @@ public class BitUltil {
 		return result;
 	}
 
-	public static void main(String[] args) {
-		String a = "abcd";
-		BitSet data = convertStringToBitSet(a);
-		BitSet[] arrayBit = cutBitSet(data, 10);
-		print(data);
-		System.out.println();
-		print(mergeBitSet(arrayBit));
+	public static BitSet getBitSet(int num, int length) {
+		BitSet bitSet = new BitSet(length);
+		for (int i = 0; i < length; i++) {
+			if (num % 2 == 1) {
+				bitSet.set(i, true);
+			} else {
+				bitSet.set(i, false);
+			}
+			num = num / 2;
+		}
+		return bitSet;
+	}
 
-		System.out.println(covertBitSetToString(mergeBitSet(arrayBit)));
+	public static int getIntFromBit(BitSet bs, int length) {
+		int result = 0;
+		for (int i = length - 1; i >= 0; i--) {
+			if (bs.get(i)) {
+				result = result + (int) Math.pow(2, i);
+			}
+		}
+		return result;
+	}
+	
+	public static int[] encodeMess(String mess, int length) {
+		BitSet[] bitSets = cutBitSet(convertStringToBitSet(mess), length);
+		int[] result = new int[bitSets.length];
+		for (int i = 0;i<bitSets.length;i++) {
+			result[i]= getIntFromBit(bitSets[i], length);
+		}
+		return result;
+	}
+	
+	public static String decodeMess(int[] data, int length) {
+		BitSet[] bitSets = new BitSet[data.length];
+		for(int i =0;i<data.length;i++) {
+			bitSets[i] = getBitSet(data[i], length);
+		}
+		return covertBitSetToString(mergeBitSet(bitSets, length));
+	}
+
+	public static void main(String[] args) {
+		int[] a = encodeMess("123123123sdfsdfsdfdsfds", 3);
+		System.out.println(decodeMess(a, 3));
 	}
 
 	static void print(BitSet bitSet) {
 		for (int i = 0; i < bitSet.length(); i++)
 			System.out.print(bitSet.get(i) ? 1 : 0);
 	}
+
 }
