@@ -9,48 +9,60 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageUtils {
-	public static byte[][] loadImage() {
+	public static BinaryImage loadImage() {
 		BufferedImage image;
 		try {
-			image = ImageIO.read(new File("/home/framgia/photo.jpg"));
+			image = ImageIO.read(new File("D:/photo.png"));
+			System.out.println(image.getRGB(502, 500));
 			byte[][] pixels = new byte[image.getWidth()][];
 
 			for (int x = 0; x < image.getWidth(); x++) {
 				pixels[x] = new byte[image.getHeight()];
 
 				for (int y = 0; y < image.getHeight(); y++) {
-					pixels[x][y] = (byte) (image.getRGB(x, y) == 0x00FFFFFF ? 0 : 1);
-					System.out.println(image.getRGB(x, y));
+					int i = image.getRGB(x, y);
+					pixels[x][y] = (byte) (i == Color.BLACK.getRGB() ? 1 : 0);
 				}
 			}
-			return pixels;
-
+			return new BinaryImage(image.getWidth(), image.getHeight(),pixels);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-
-		return null;
 	}
 
-	public static void makeImage(byte[][] pixels, int width, int height) {
+	public static void makeImage(BinaryImage binaryImage) {
 		try {
-
+			int width = binaryImage.getWidth();
+			int height = binaryImage.getHeight();
+			byte[][] pixels = binaryImage.getImage();
 			BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 			Graphics2D g2d = bufferedImage.createGraphics();
+			g2d.setColor(Color.white);
+	        g2d.fillRect(0, 0, width, height);
+
 			g2d.setColor(Color.black);
 			for (int i = 0; i < width; i++) {
 				for(int j= 0; j<height;j++) {
 					if(pixels[i][j]==1) {
-					g2d.drawRect(i, j, 1, 1);}
+						g2d.drawLine(i, j, i, j);
+						g2d.setColor(Color.black);
+//						g2d.dispose();
+					} else {
+						g2d.drawLine(i, j, i, j);
+						g2d.setColor(Color.WHITE);
+//						g2d.dispose();
+					}
 				}
 			}
-			// Save as PNG
-			File file = new File("/home/framgia/myimage.png");
-			ImageIO.write(bufferedImage, "png", file);
+			g2d.dispose();
+//			// Save as PNG
+//			File file = new File("/home/framgia/myimage.png");
+//			ImageIO.write(bufferedImage, "png", file);
 
 			// Save as JPEG
-			file = new File("/home/framgia/myimage.jpg");
+			File file = new File("D:/demoimage1.jpg");
 			ImageIO.write(bufferedImage, "jpg", file);
 
 		} catch (IOException e) {
@@ -59,7 +71,31 @@ public class ImageUtils {
 	}
 
 	public static void main(String[] args) {
-		byte[][] bs =loadImage();
-		makeImage(bs, 100, 100);
+		BinaryImage bs = loadImage();
+		makeImage(bs);
 	}
+//	public static void main(String... args) {
+//
+//        try {
+//
+//            File input = new File("D:/pho1.jpg");
+//            BufferedImage image = ImageIO.read(input);
+//
+//            BufferedImage result = new BufferedImage(
+//                    image.getWidth(),
+//                    image.getHeight(),
+//                    BufferedImage.TYPE_BYTE_BINARY);
+//
+//            Graphics2D graphic = result.createGraphics();
+//            graphic.drawImage(image, 0, 0, Color.WHITE, null);
+//            graphic.dispose();
+//
+//            File output = new File("D:/demoimage.jpg");
+//            ImageIO.write(result, "jpg", output);
+//
+//        }  catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 }
