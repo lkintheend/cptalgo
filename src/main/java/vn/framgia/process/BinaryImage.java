@@ -3,12 +3,12 @@ package vn.framgia.process;
 public class BinaryImage {
 	private int width;
 	private int height;
-	private byte[][] image;
+	private byte[] image;
 	
 	public BinaryImage() {
 		super();
 	}
-	public BinaryImage(int width, int height, byte[][] image) {
+	public BinaryImage(int width, int height, byte[] image) {
 		super();
 		this.width = width;
 		this.height = height;
@@ -26,10 +26,10 @@ public class BinaryImage {
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	public byte[][] getImage() {
+	public byte[] getImage() {
 		return image;
 	}
-	public void setImage(byte[][] image) {
+	public void setImage(byte[] image) {
 		this.image = image;
 	}
 	
