@@ -97,10 +97,11 @@ public class Encode {
 		// 0, 0, 0
 		// 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		// 0, 0,
-		BinaryImage result = encode(bs, "abcdsdfsdfe", w, k, 5, 5, 4);
-		ImageUtils.makeImage(result);
+		BinaryImage result = encode(bs, "12wqewqe3", w, k, 5, 5, 4);
+		String savePath = "/home/framgia/demo5.png";
+		ImageUtils.makeImage(result,savePath);
 
-		String path1 = "/home/framgia/demo2.png";
+		String path1 = "/home/framgia/demo5.png";
 		BinaryImage image = ImageUtils.loadImage(path1);
 		String a = decode(image, w, k, 5, 5, 4);
 		System.out.println(a);

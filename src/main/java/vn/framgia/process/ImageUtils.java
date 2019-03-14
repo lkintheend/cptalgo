@@ -28,7 +28,7 @@ public class ImageUtils {
 		}
 	}
 
-	public static void makeImage(BinaryImage binaryImage) {
+	public static void makeImage(BinaryImage binaryImage, String savePath) {
 		try {
 			int width = binaryImage.getWidth();
 			int height = binaryImage.getHeight();
@@ -48,7 +48,7 @@ public class ImageUtils {
 				}
 			}
 			g2d.dispose();
-			File file = new File("/home/framgia/demo2.png");
+			File file = new File(savePath);
 			ImageIO.write(bufferedImage, "png", file);
 
 		} catch (IOException e) {
@@ -60,28 +60,28 @@ public class ImageUtils {
 //		BinaryImage bs = loadImage();
 //		makeImage(bs);
 //	}
-//	public static void main(String... args) {
-//
-//        try {
-//
-//            File input = new File("/home/framgia/photo.jpg");
-//            BufferedImage image = ImageIO.read(input);
-//
-//            BufferedImage result = new BufferedImage(
-//                    image.getWidth(),
-//                    image.getHeight(),
-//                    BufferedImage.TYPE_BYTE_BINARY);
-//
-//            Graphics2D graphic = result.createGraphics();
-//            graphic.drawImage(image, 0, 0, Color.WHITE, null);
-//            graphic.dispose();
-//
-//            File output = new File("/home/framgia/demo.png");
-//            ImageIO.write(result, "png", output);
-//
-//        }  catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
+	public static void main(String... args) {
+
+        try {
+
+            File input = new File("/home/framgia/images.jpeg");
+            BufferedImage image = ImageIO.read(input);
+
+            BufferedImage result = new BufferedImage(
+                    image.getWidth(),
+                    image.getHeight(),
+                    BufferedImage.TYPE_BYTE_BINARY);
+
+            Graphics2D graphic = result.createGraphics();
+            graphic.drawImage(image, 0, 0, Color.WHITE, null);
+            graphic.dispose();
+
+            File output = new File("/home/framgia/demo4.png");
+            ImageIO.write(result, "png", output);
+
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
